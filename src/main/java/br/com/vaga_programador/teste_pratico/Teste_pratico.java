@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package br.com.vaga_programador.teste_pratico;
 
 import br.com.vaga_programador.teste_pratico.util.DatabaseConnection;
