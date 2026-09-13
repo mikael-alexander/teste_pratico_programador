@@ -74,8 +74,20 @@ public class RegisterScreen extends JFrame {
             return;
         }
 
-        if (!email.contains("@")) {
-            JOptionPane.showMessageDialog(this, "E-mail inválido.", "Erro", JOptionPane.ERROR_MESSAGE);
+        if (name.length() < 3) {
+            JOptionPane.showMessageDialog(this, "O nome deve ter no mínimo 3 caracteres.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(this, "A senha deve ter no mínimo 8 caracteres.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Expressão regular (Regex) para validar o formato do e-mail (ex: nome@dominio.com)
+        String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+        if (!email.matches(emailRegex)) {
+            JOptionPane.showMessageDialog(this, "E-mail inválido. Digite um formato válido (ex: seuemail@dominio.com).", "Erro", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -90,8 +102,13 @@ public class RegisterScreen extends JFrame {
                 this.dispose();
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-            ex.printStackTrace();
+            // Código 23505 é o SQLState padrão do PostgreSQL para violação de constraint (ex: UNIQUE)
+            if ("23505".equals(ex.getSQLState())) {
+                JOptionPane.showMessageDialog(this, "Não é possível cadastrar. O e-mail informado já existe no sistema.", "E-mail Duplicado", JOptionPane.WARNING_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, "Erro ao salvar: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
         }
     }
 }

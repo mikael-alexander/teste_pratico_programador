@@ -84,6 +84,11 @@ public class EmployeeScreen extends JFrame {
             return;
         }
 
+        if (name.length() < 3) {
+            JOptionPane.showMessageDialog(this, "O nome deve ter no mínimo 3 caracteres.", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
             LocalDate admissionDate = LocalDate.parse(dateStr, formatter);
